@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Encoding
+from .models import CustomUser, UserEncoding
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -8,9 +8,13 @@ class UserSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EncodingSerializer(serializers.Serializer):
-    user_encoding = serializers.CharField()
+class PhotoSerializer(serializers.Serializer):
+    photo1 = serializers.ImageField()
+    photo2 = serializers.ImageField()
+    photo3 = serializers.ImageField()
 
+    def create(self, validated_data):
+        return UserEncoding.objects.create(**validated_data)
 
 
 
