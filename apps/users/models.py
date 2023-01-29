@@ -19,3 +19,9 @@ class UserEncoding(models.Model):
     user_encoding1 = models.CharField(max_length=255, verbose_name='User face encoding', null=True, blank=True)
     user_encoding2 = models.CharField(max_length=255, verbose_name='User face encoding', null=True, blank=True)
     user_encoding3 = models.CharField(max_length=255, verbose_name='User face encoding', null=True, blank=True)
+
+
+class LateComer(models.Model):
+    employee = models.ForeignKey(CustomUser, on_delete=models.PROTECT, verbose_name='Employee who is late',
+                                 null=True, blank=True)
+    time_late=models.DateTimeField( null=True, blank=True)

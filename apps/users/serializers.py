@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, UserEncoding
+from .models import CustomUser, UserEncoding, LateComer
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -17,5 +17,9 @@ class PhotoSerializer(serializers.Serializer):
         return UserEncoding.objects.create(**validated_data)
 
 
+class LateComerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LateComer
+        fields = '__all__'
 
 

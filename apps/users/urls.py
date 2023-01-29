@@ -9,4 +9,5 @@ urlpatterns = [
     path("auth/", include("rest_framework.urls")),
     path("users-list/", CustomUserApiView.as_view()),
     path("encoding_add/", EncodingApiView.as_view()),
+    path("late_comer/", LateComerAPIView.as_view()),
 ]
