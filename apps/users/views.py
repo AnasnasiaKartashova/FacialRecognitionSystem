@@ -1,5 +1,5 @@
-import os
 from rest_framework import status
+from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from .models import CustomUser, UserEncoding, LateComer
 from .serializers import UserSerializers, PhotoSerializer, LateComerSerializer
@@ -16,26 +16,26 @@ class CustomUserApiView(APIView):
 
 
 class EncodingApiView(APIView):
-    def post(self, request):
-        serializer = PhotoSerializer(data=request.data)
-        serializer.is_valid()
-        serializer.save()
-        encodings = train_model_by_img()
-        UserEncoding.objects.update(
-            user_encoding1=encodings[0],
-            user_encoding2=encodings[1],
-            user_encoding3=encodings[2])
-        for f in os.listdir('media'):
-            os.remove(os.path.join('media', f))
-        return Response(status=status.HTTP_200_OK)
+    serializer_class = PhotoSerializer
 
+    def get(self, request, pk):
+        serializer = self.serializer_class(UserEncoding.objects.all(), many=True)
+
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    def post(self, request, pk):
+        instance = get_object_or_404(CustomUser.objects.all(), id=pk)
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(instance=instance)
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class LateComerAPIView(APIView):
     def get(self, request):
         serializer = LateComerSerializer(LateComer.objects.all(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
     def post(self, request):
         serializer = LateComerSerializer(data=request.data)
