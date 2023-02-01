@@ -10,5 +10,6 @@ urlpatterns = [
     path("users-list/", CustomUserApiView.as_view()),
     path("users-list/", CustomUserApiView.as_view()),
     path("encoding_add/<int:pk>/", EncodingApiView.as_view()),
+    path("encoding_all/", UserEncodingApiView.as_view()),
     path("late_comer/", LateComerAPIView.as_view()),
 ]

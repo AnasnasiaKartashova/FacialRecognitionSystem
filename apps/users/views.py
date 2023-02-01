@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from .models import CustomUser, UserEncoding, LateComer
-from .serializers import UserSerializers, PhotoSerializer, LateComerSerializer
+from .serializers import UserSerializers, PhotoSerializer, LateComerSerializer, UserEncodingSerializer
 from rest_framework.response import Response
 from apps.functions.train_model import train_model_by_img
 
@@ -32,13 +32,23 @@ class EncodingApiView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class LateComerAPIView(APIView):
+class UserEncodingApiView(APIView):
+    serializer_class = UserEncodingSerializer
+
     def get(self, request):
-        serializer = LateComerSerializer(LateComer.objects.all(), many=True)
+        serializer = self.serializer_class(UserEncoding.objects.all(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LateComerAPIView(APIView):
+    serializer_class = LateComerSerializer
+
+    def get(self, request):
+        serializer = self.serializer_class(LateComer.objects.all(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = LateComerSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)

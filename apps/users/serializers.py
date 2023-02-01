@@ -31,9 +31,13 @@ class PhotoSerializer(serializers.Serializer):
         return result
 
 
+class UserEncodingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEncoding
+        exclude = ['photo1', 'photo2', 'photo3']
 
 
 class LateComerSerializer(serializers.ModelSerializer):
     class Meta:
         model = LateComer
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'time_late']
